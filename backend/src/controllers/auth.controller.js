@@ -1,6 +1,7 @@
 import asyncHandler from "express-async-handler"
 import User from "../models/user.model.js";
 import bcrypt from 'bcryptjs';
+import generateToken from "../config/token.js";
 
 export const signup = asyncHandler(async (req, res, next) => {
     try {
@@ -12,7 +13,7 @@ export const signup = asyncHandler(async (req, res, next) => {
 
         // checking password length
         if (password.length < 6) {
-            return res.status(400).json({ "error": "Password should be less than 6 characters.." })
+            return res.status(400).json({ "error": "Password must be atleast 6 characters.." })
         }
 
         // hashing the password
@@ -24,6 +25,17 @@ export const signup = asyncHandler(async (req, res, next) => {
             name,
             password: hashedPassword
         })
+        const token = await generateToken(user._id);
+
+        res.cookie("token", token, {
+            httpOnly: true,
+            maxAge: 7 * 24 * 60 * 60 * 1000,  // 7days
+            sameSite: "strict",
+            secure: false
+        })
+        res.status(201).json({ "message": "User created successfully", token, user });
+
+        // generate token
     } catch (error) {
         console.log("Error in Signup controller : ", error);
         next(error);
