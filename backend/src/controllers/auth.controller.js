@@ -42,3 +42,40 @@ export const signup = asyncHandler(async (req, res, next) => {
     }
 
 })
+
+export const login = asyncHandler(async (req, res, next) => {
+    try {
+        const { email, password } = req.body;
+
+        // check for existing user
+        const user = await User.findOne({ email });
+        if (!user) return res.status(400).json({ error: "Invalid credentials" });
+        // checking password
+        const comparePassword = await bcrypt.compare(password, user.password);
+        if (!comparePassword) return res.status(400).json({ error: "Invalid credentials" });
+
+        // generate token
+        const token = await generateToken(user._id);
+
+        res.cookie("token", token, {
+            httpOnly: true,
+            maxAge: 7 * 24 * 60 * 60 * 1000,  // 7days
+            sameSite: "strict",
+            secure: false
+        })
+        res.status(201).json({ "message": "User logged in successfully", token, user });
+    } catch (error) {
+        console.log("Error in login controller : ", error);
+        next(error);
+    }
+})
+
+export const logout = asyncHandler(async (req, res, next) => {
+    try {
+        res.clearCookie("token");
+        res.status(200).json({ "message": "User logged out successfully" });
+    } catch (error) {
+        console.log("Error in logout controller : ", error);
+        next(error);
+    }
+})
