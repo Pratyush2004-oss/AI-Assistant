@@ -93,3 +93,5 @@ export const getMe = asyncHandler(async (req, res, next) => {
         next(error);
     }
 })
+
+// updating or adding the agent name and agent Image
