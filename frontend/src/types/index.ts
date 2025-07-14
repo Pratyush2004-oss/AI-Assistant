@@ -5,7 +5,7 @@ export type UserType = {
   assistant: {
     name: string;
     image: string;
-  };
+  } | null;
   history: string[];
 };
 
@@ -19,5 +19,3 @@ export type UserSignupType = {
   email: string;
   password: string;
 };
-
-

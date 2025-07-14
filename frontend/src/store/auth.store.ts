@@ -8,6 +8,7 @@ interface AuthStore {
   user: UserType | null;
   signup: (input: UserSignupType) => Promise<void>;
   login: (input: UserLoginType) => Promise<void>;
+  checkMe: () => Promise<void>;
   logout: () => void;
 }
 
@@ -16,7 +17,9 @@ export const useAuthStore = create<AuthStore>((set) => ({
   //   login controller
   login: async (input) => {
     try {
-      const response = await axios.post(`${BASE_URL}/auth/login`, input);
+      const response = await axios.post(`${BASE_URL}/auth/login`, input, {
+        withCredentials: true,
+      });
 
       if (response.status === 400) {
         throw new Error(response.data.error);
@@ -34,7 +37,9 @@ export const useAuthStore = create<AuthStore>((set) => ({
   //   signup controller
   signup: async (input) => {
     try {
-      const response = await axios.post(`${BASE_URL}/auth/signup`, input);
+      const response = await axios.post(`${BASE_URL}/auth/signup`, input, {
+        withCredentials: true,
+      });
 
       if (response.status == 400) {
         throw new Error(response.data.error);
@@ -47,6 +52,18 @@ export const useAuthStore = create<AuthStore>((set) => ({
       } else {
         toast.error(error.message || "Unknown error");
       }
+    }
+  },
+  // checkAuth
+  checkMe: async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}/auth/getMe`, {
+        withCredentials: true,
+      });
+      console.log(response.data.user)
+      set({ user: response.data.user });
+    } catch (error:any) {
+      console.log(error);
     }
   },
   logout: () => {},
