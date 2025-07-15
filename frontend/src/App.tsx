@@ -5,21 +5,24 @@ import HomePage from "./pages/Home";
 import { useAuthStore } from "./store/auth.store";
 import { useEffect } from "react";
 import CustomizePage from "./pages/CustomizePage";
+import Redirect from "./components/Redirect";
 
 function App() {
   const { user, checkMe } = useAuthStore();
 
   useEffect(() => {
     checkMe();
-  }, [user]);
+  }, [user, checkMe]);
   return (
     <>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/signin" element={<SignIn />} />
-        <Route path="/customize" element={<CustomizePage />} />
-      </Routes>
+      <Redirect>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/signin" element={<SignIn />} />
+          <Route path="/customize" element={<CustomizePage />} />
+        </Routes>
+      </Redirect>
     </>
   );
 }

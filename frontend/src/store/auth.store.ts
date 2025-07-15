@@ -10,6 +10,7 @@ interface AuthStore {
   login: (input: UserLoginType) => Promise<void>;
   checkMe: () => Promise<void>;
   logout: () => void;
+  updateAssistant: (input: FormData) => Promise<boolean>;
 }
 
 export const useAuthStore = create<AuthStore>((set) => ({
@@ -61,9 +62,36 @@ export const useAuthStore = create<AuthStore>((set) => ({
         withCredentials: true,
       });
       set({ user: response.data.user });
-    } catch (error:any) {
+    } catch (error: any) {
       console.log(error);
     }
   },
+  // update user with AI-Assistant
+  updateAssistant: async (formData) => {
+    try {
+      const response = await axios.post(
+        `${BASE_URL}/auth/updateAssistant`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          withCredentials: true,
+        }
+      );
+      if (response.status === 400) throw new Error(response.data.error);
+      set({ user: response.data.user });
+      toast.success(response.data.message);
+      return true;
+    } catch (error: any) {
+      if (axios.isAxiosError(error)) {
+        toast.error(error.response?.data?.error || error.message);
+      } else {
+        toast.error(error.message || "Unknown error");
+      }
+      return false;
+    }
+  },
+  // logout
   logout: () => {},
 }));

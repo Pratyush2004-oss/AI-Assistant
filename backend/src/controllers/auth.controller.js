@@ -2,6 +2,7 @@ import asyncHandler from "express-async-handler"
 import User from "../models/user.model.js";
 import bcrypt from 'bcryptjs';
 import generateToken from "../config/token.js";
+import uploadOnCloudinary from "../config/cloudinary.js";
 
 // signup
 export const signup = asyncHandler(async (req, res, next) => {
@@ -95,3 +96,29 @@ export const getMe = asyncHandler(async (req, res, next) => {
 })
 
 // updating or adding the agent name and agent Image
+export const updateAssistant = asyncHandler(async (req, res, next) => {
+    try {
+        const { assistantName, imageUrl } = req.body;
+        const user = req.user;
+        let assistantImage;
+        if (req.file) {
+            assistantImage = await uploadOnCloudinary(req.file.path);
+            if (assistantImage === null) return res.status(400).json({ error: "Image upload failed" });
+        }
+        else {
+            assistantImage = imageUrl;
+        }
+        const updatedUser = await User.findByIdAndUpdate(user._id, {
+            assistant: {
+                name: assistantName,
+                image: assistantImage
+            }
+        }, { new: true }).select("-password");
+        await updatedUser.save();
+        res.status(200).json({ user: updatedUser, message: `${assistantName} assistant added successfully ` });
+
+    } catch (error) {
+        console.log("Error in updateAssistant controller : ", error);
+        next(error);
+    }
+})

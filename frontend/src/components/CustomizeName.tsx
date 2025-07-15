@@ -1,4 +1,4 @@
-import { ArrowLeft, MoveLeft } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 
 function CustomizeName({
   selectedImage,
@@ -19,7 +19,10 @@ function CustomizeName({
         {/* back button */}
         <button
           className="absolute top-5 left-5 py-2 px-5 cursor-pointer bg-[#0000ff48] rounded-full flex items-center gap-1 text-white"
-          onClick={() => setNextPart(false)}
+          onClick={() => {
+            setNextPart(false);
+            setname(null);
+          }}
         >
           <ArrowLeft size={18} />
           Back
@@ -41,11 +44,12 @@ function CustomizeName({
           <p className="text-lg font-bold text-center">
             Set name for your assistant
           </p>
-          <input 
-          type="text"  
-          onChange={(e) => setname(e.target.value)} 
-          placeholder="Enter your name" 
-          className="bg-[#030326] border-2 w-xs sm:w-sm border-[#0000ff7c] rounded-2xl hover:shadow-2xl hover:shadow-blue-950 hover:border-4 hover:border-white hover:scale-105 transition-all duration-300 px-5 py-3 sm:text-lg"
+          <input
+            type="text"
+            value={name || ""}
+            onChange={(e) => setname(e.target.value)}
+            placeholder="ex. Sifra"
+            className="bg-[#030326] border-2 w-xs sm:w-sm border-[#0000ff7c] rounded-2xl hover:shadow-2xl hover:shadow-blue-950 hover:border-4 hover:border-white hover:scale-105 transition-all duration-300 px-5 py-3 sm:text-lg"
           />
         </div>
       </div>

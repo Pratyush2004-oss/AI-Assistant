@@ -31,6 +31,7 @@ function CustomizeImage({
             image={image}
             selectedImage={selectedImage}
             setselectedImage={setselectedImage}
+            setBackendImage={setbackendImage}
           />
         ))}
         <div
