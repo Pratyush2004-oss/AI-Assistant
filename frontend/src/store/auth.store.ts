@@ -60,7 +60,6 @@ export const useAuthStore = create<AuthStore>((set) => ({
       const response = await axios.get(`${BASE_URL}/auth/getMe`, {
         withCredentials: true,
       });
-      console.log(response.data.user)
       set({ user: response.data.user });
     } catch (error:any) {
       console.log(error);
