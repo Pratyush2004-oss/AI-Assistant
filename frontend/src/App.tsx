@@ -8,7 +8,7 @@ import CustomizePage from "./pages/CustomizePage";
 import Redirect from "./components/Redirect";
 
 function App() {
-  const { user, checkMe } = useAuthStore();
+  const { user,checkMe } = useAuthStore();
 
   useEffect(() => {
     checkMe();

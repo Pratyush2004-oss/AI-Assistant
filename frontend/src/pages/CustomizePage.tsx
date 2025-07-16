@@ -6,6 +6,7 @@ import "ldrs/react/Spiral.css";
 import toast from "react-hot-toast";
 import { useAuthStore } from "../store/auth.store";
 import { useNavigate } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
 function CustomizePage() {
   const [UploadedImage, setUploadedImage] = useState<string | undefined>();
   const [selectedImage, setselectedImage] = useState<string | null>(null);
@@ -44,6 +45,12 @@ function CustomizePage() {
 
   return (
     <div className="w-full h-screen bg-gradient-to-t from-black to-[#020253] overflow-auto pb-10">
+      <button
+        onClick={() => navigate("/")}
+        className="absolute top-5 left-5 sm:text-lg bg-gradient-to-r from-blue-500 via-blue-800 to-blue-500 font-semibold px-4 py-2 rounded-full text-white hover:bg-gradient-to-r hover:from-blue-800 hover:via-blue-900 hover:to-blue-800 mx-auto flex items-center justify-center gap-1"
+      >
+        <ArrowLeft size={18} />
+      </button>
       {!nextPart ? (
         <CustomizeImage
           selectedImage={selectedImage}

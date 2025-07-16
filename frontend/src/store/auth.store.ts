@@ -9,7 +9,7 @@ interface AuthStore {
   signup: (input: UserSignupType) => Promise<void>;
   login: (input: UserLoginType) => Promise<void>;
   checkMe: () => Promise<void>;
-  logout: () => void;
+  logout: () => Promise<boolean>;
   updateAssistant: (input: FormData) => Promise<boolean>;
 }
 
@@ -62,9 +62,7 @@ export const useAuthStore = create<AuthStore>((set) => ({
         withCredentials: true,
       });
       set({ user: response.data.user });
-    } catch (error: any) {
-      console.log(error);
-    }
+    } catch (error: any) {}
   },
   // update user with AI-Assistant
   updateAssistant: async (formData) => {
@@ -93,5 +91,25 @@ export const useAuthStore = create<AuthStore>((set) => ({
     }
   },
   // logout
-  logout: () => {},
+  logout: async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}/auth/logout`, {
+        withCredentials: true,
+      });
+      if (response.status === 400) throw new Error(response.data.error);
+      if (response.status === 200) {
+        set({ user: null });
+        toast.success(response.data.message);
+        return true;
+      }
+      return false;
+    } catch (error: any) {
+      if (axios.isAxiosError(error)) {
+        toast.error(error.response?.data?.error || error.message);
+      } else {
+        toast.error(error.message || "Unknown error");
+      }
+      return false;
+    }
+  },
 }));
