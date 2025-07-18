@@ -7,4 +7,6 @@ export const ENV = {
     CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY,
     CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET,
     CLOUDINARY_NAME: process.env.CLOUDINARY_NAME,
+    GEMINI_API_KEY: process.env.GEMINI_API_KEY,
+    GEMINI_URL: process.env.GEMINI_URL
 }

@@ -5,6 +5,7 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 // importing routers 
 import authRouter from './routes/auth.route.js';
+import geminiResponse from './config/gemini.js';
 
 const app = express();
 const PORT = ENV.PORT || 5000;
@@ -19,9 +20,6 @@ app.use(cors(
 ));
 
 
-app.get("/", (req, res) => {
-    res.send("Server is running");
-})
 app.use("/api/v1/auth", authRouter);        // user routes
 
 app.use((err, req, res, next) => {
