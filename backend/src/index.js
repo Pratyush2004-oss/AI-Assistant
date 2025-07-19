@@ -5,7 +5,6 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 // importing routers 
 import authRouter from './routes/auth.route.js';
-import geminiResponse from './config/gemini.js';
 
 const app = express();
 const PORT = ENV.PORT || 5000;

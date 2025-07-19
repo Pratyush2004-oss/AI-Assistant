@@ -20,7 +20,7 @@ const geminiResponse = async (question, assitantName, userName) => {
         - "response": A short voice-friendly reply, e.g., "Here what I found", "Today is Tuesday", "Sure, playing it now", etc"
     
     Type meanings :
-        - "general": if it •s a factual or informational question.
+        - "general": if it is a factual or informational question.
         - "google_search": if user wants to search something on Google .
         - "youtube_search": if user wants to search something on YouTube.
         - "youtube_play": if user wants to directly play a video or song.
@@ -34,7 +34,7 @@ const geminiResponse = async (question, assitantName, userName) => {
         - "get _month": if user asks for the current month.
 
     Important:
-        - Use "{author name}" agar koi puche kisne banaya
+        - Use "${userName}" agar koi puche kisne banaya
         - Only respond with the JSON object, nothing else.
         
     now your userInput : ${question}

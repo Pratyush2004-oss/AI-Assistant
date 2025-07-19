@@ -19,3 +19,9 @@ export type UserSignupType = {
   email: string;
   password: string;
 };
+
+export type GeminiRespType = {
+  type: string;
+  userInput: string;
+  response: string;
+};

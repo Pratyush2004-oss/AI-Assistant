@@ -6,6 +6,8 @@ import moment from "moment";
 export const askToAssistant = expressAsyncHandler(async (req, res, next) => {
     try {
         const { question } = req.query;
+
+        if (!question) return res.status(400).json({ error: "Question not found" });
         const user = req.user;
 
         const assistantImage = await User.findById(user._id).select("assistant");
@@ -60,15 +62,9 @@ export const askToAssistant = expressAsyncHandler(async (req, res, next) => {
                     userInput: geminiResult.userInput,
                     response: geminiResult.response
                 })
-            default: 
+            default:
                 return res.json({ response: "Sorry, I can't understand....." });
-
         }
-
-        const userinput = geminiResult.userinput;
-        const responseText = geminiResult.response;
-
-        res.status(200).json({ response });
 
     } catch (error) {
         console.log("Error in askToAssistant controller : ", error);
