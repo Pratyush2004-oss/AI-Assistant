@@ -10,7 +10,7 @@ function HomePage() {
   const handleLogout = async () => {
     await logout();
   };
-  const { geminiResponse, getGeminiResponse } = useGeminiStore();
+  const { getGeminiResponse } = useGeminiStore();
   const [userSpeech, setUserSpeech] = useState<string>("");
 
   // speak function
